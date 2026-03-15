@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "preflight-ml"
-version = "0.1.0"
+version = "0.1.1"
 description = "Pre-flight checks for PyTorch pipelines. Catch silent failures before they waste your GPU."
 readme = "README.md"
 license = { file = "LICENSE" }
