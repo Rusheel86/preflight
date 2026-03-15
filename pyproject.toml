@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "preflight"
+name = "preflight-ml"
 version = "0.1.0"
 description = "Pre-flight checks for PyTorch pipelines. Catch silent failures before they waste your GPU."
 readme = "README.md"

@@ -3,18 +3,19 @@
 > Pre-flight checks for PyTorch pipelines. Catch silent failures before they waste your GPU.
 
 [![CI](https://github.com/Rusheel86/preflight/actions/workflows/ci.yml/badge.svg)](https://github.com/Rusheel86/preflight/actions/workflows/ci.yml)
-[![PyPI version](https://img.shields.io/pypi/v/preflight-ml)](https://pypi.org/project/preflight-ml/)
-[![Python](https://img.shields.io/pypi/pyversions/preflight-ml)](https://pypi.org/project/preflight-ml/)
+[![PyPI version](https://badge.fury.io/py/preflight-ml.svg)](https://pypi.org/project/preflight-ml/)
+[![Python](https://img.shields.io/pypi/pyversions/preflight-ml.svg)](https://pypi.org/project/preflight-ml/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/preflight-ml.svg)](https://pypi.org/project/preflight-ml/)
 
 ---
 
-Most deep learning bugs don't crash your training loop — they silently produce a garbage model.
+Most deep learning bugs don't crash your training loop, they silently produce a garbage model.
 NaNs in your data, labels leaking between train and val, wrong channel ordering, dead gradients.
 You won't know until hours later, after the GPU bill has landed.
 
 **preflight** is a pre-training validation tool you run in 30 seconds before starting any training job.
-It's not a linter. It's a pre-flight check — the kind pilots run before the expensive thing takes off.
+It's not a linter. It's a pre-flight check, similar to the kind pilots run before the expensive thing takes off.
 
 ---
 
@@ -163,7 +164,7 @@ preflight checks
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). New checks are welcome — each one needs a passing test,
+See [CONTRIBUTING.md](CONTRIBUTING.md). New checks are welcome. Each one needs a passing test,
 a failing test, and a fix hint.
 
 ## License
