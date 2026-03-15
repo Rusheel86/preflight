@@ -1,0 +1,23 @@
+[checks]
+# set false to disable any check
+nan_inf_detection = true
+normalisation_sanity = true
+channel_ordering = true
+label_leakage = true
+split_sizes = true
+vram_estimation = true
+class_imbalance = true
+shape_mismatch = true
+gradient_check = true
+
+[thresholds]
+nan_sample_batches = 10
+norm_sample_batches = 5
+leakage_sample_batches = 20
+imbalance_sample_batches = 10
+imbalance_threshold = 0.1
+
+[ignore]
+# example: ignore a specific check with a reason
+# check = "class_imbalance"
+# reason = "intentional: rare event dataset"

@@ -1,0 +1,46 @@
+name: Bug report
+description: Something is broken
+labels: ["bug"]
+body:
+  - type: input
+    id: preflight-version
+    attributes:
+      label: preflight version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: pytorch-version
+    attributes:
+      label: PyTorch version
+      placeholder: "2.1.0"
+    validations:
+      required: true
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      placeholder: "3.11"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      options: [Windows, macOS, Linux]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Smallest code that reproduces the issue
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual output
+    validations:
+      required: true
