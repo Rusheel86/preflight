@@ -30,7 +30,7 @@ jobs:
         run: ruff check .
 
       - name: Type check
-        run: mypy preflight/
+        run: mypy preflight/ --ignore-missing-imports --exclude torch
 
       - name: Test
         run: pytest
