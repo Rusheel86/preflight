@@ -7,7 +7,7 @@
 [![Python](https://img.shields.io/pypi/pyversions/preflight-ml.svg)](https://pypi.org/project/preflight-ml/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/preflight-ml.svg)](https://pypi.org/project/preflight-ml/)
-
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-preflight--ml-blue?logo=github)](https://github.com/marketplace/actions/preflight-ml)
 ---
 
 Most deep learning bugs don't crash your training loop, they silently produce a garbage model.
@@ -68,6 +68,35 @@ preflight — pre-training check report
 Pre-flight passed. Safe to start training.
 ```
 
+## GitHub Actions
+
+Add preflight to your CI pipeline with one step. It will fail the build automatically
+if any fatal check fails:
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+
+  - name: Run pre-flight checks
+    uses: Rusheel86/preflight@v0.1.1
+    with:
+      dataloader: scripts/my_dataloader.py
+```
+
+With a model and val set:
+
+```yaml
+  - name: Run pre-flight checks
+    uses: Rusheel86/preflight@v0.1.1
+    with:
+      dataloader: scripts/my_dataloader.py
+      model: scripts/my_model.py
+      loss: scripts/my_loss.py
+      val-dataloader: scripts/my_val_dataloader.py
+```
+
+Available on the [GitHub Marketplace](https://github.com/marketplace/actions/preflight-ml).
+
 ## Checks
 
 preflight runs 10 checks across three severity tiers. A **FATAL** failure exits with code 1 and blocks CI.
@@ -84,6 +113,22 @@ preflight runs 10 checks across three severity tiers. A **FATAL** failure exits 
 | `class_imbalance` | WARN | Severe class imbalance beyond configurable threshold |
 | `split_sizes` | INFO | Empty or degenerate train/val splits |
 | `duplicate_samples` | INFO | Identical samples within a split |
+
+## How it fits alongside other tools
+
+preflight is not trying to replace anything. It fills a specific gap in the ML workflow
+that existing tools don't directly address.
+
+| Tool | What it does | How preflight differs |
+|---|---|---|
+| **pytest** | Tests code logic | preflight tests data state — a pytest suite can pass while your dataset has NaNs and leaking splits |
+| **Deepchecks** | Comprehensive ML validation platform | preflight is narrower and lighter — one command, zero config, focused only on pre-training blockers |
+| **Great Expectations** | General purpose data validation | Not ML-specific — preflight checks are built around PyTorch concepts like dataloaders, tensor shapes, and channel ordering |
+| **WandB / MLflow** | Experiment tracking during and after training | preflight runs before training starts, not during |
+| **PyTorch Lightning sanity check** | Runs a few val steps before training to catch code crashes | Runtime only — preflight catches data state bugs that don't crash Python but silently break training |
+
+The short version: if your code runs but your model learns nothing, preflight is what
+you run first.
 
 ## With a model
 
@@ -126,9 +171,9 @@ vram_estimation = false
 # reason = "intentional: rare event dataset"
 ```
 
-## CI integration
+## CI integration via pip
 
-Add to your GitHub Actions workflow:
+If you prefer installing via pip directly in your own workflow:
 
 ```yaml
 - name: Install preflight
@@ -138,7 +183,8 @@ Add to your GitHub Actions workflow:
   run: preflight run --dataloader scripts/dataloader.py --format json
 ```
 
-The `--format json` flag outputs machine-readable results. Exit code is `1` if any FATAL check fails, `0` otherwise.
+The `--format json` flag outputs machine-readable results. Exit code is `1` if any
+FATAL check fails, `0` otherwise.
 
 ## List all checks
 
@@ -164,7 +210,7 @@ preflight checks
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). New checks are welcome. Each one needs a passing test,
+See [CONTRIBUTING.md](CONTRIBUTING.md). New checks are welcome — each one needs a passing test,
 a failing test, and a fix hint.
 
 ## License
