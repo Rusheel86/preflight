@@ -67,3 +67,9 @@ addopts = "--cov=preflight --cov-report=term-missing"
 
 [tool.coverage.run]
 omit = ["tests/*"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["preflight"]
+
+[tool.hatch.build.targets.sdist]
+include = ["preflight/", "tests/", "README.md", "LICENSE", "CHANGELOG.md"]
