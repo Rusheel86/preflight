@@ -1,0 +1,28 @@
+name: Test Action
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create test dataloader
+        run: |
+          cat > /tmp/test_dataloader.py << 'EOF'
+          import torch
+          from torch.utils.data import DataLoader, TensorDataset
+          x = torch.randn(100, 3, 32, 32)
+          y = torch.randint(0, 5, (100,))
+          dataloader = DataLoader(TensorDataset(x, y), batch_size=16)
+          EOF
+
+      - name: Run preflight action
+        uses: ./
+        with:
+          dataloader: /tmp/test_dataloader.py

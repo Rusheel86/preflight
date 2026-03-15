@@ -1,0 +1,68 @@
+name: preflight
+description: Pre-flight checks for PyTorch pipelines. Catch silent failures before they waste your GPU.
+author: Rusheel Sharma
+
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  dataloader:
+    description: Path to Python file that defines a variable named dataloader
+    required: true
+  model:
+    description: Path to Python file that defines a variable named model
+    required: false
+    default: ''
+  loss:
+    description: Path to Python file that defines a variable named loss_fn
+    required: false
+    default: ''
+  val-dataloader:
+    description: Path to Python file that defines a variable named dataloader (val set)
+    required: false
+    default: ''
+  python-version:
+    description: Python version to use
+    required: false
+    default: '3.11'
+  preflight-version:
+    description: preflight-ml version to install
+    required: false
+    default: 'latest'
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install preflight
+      shell: bash
+      run: |
+        if [ "${{ inputs.preflight-version }}" = "latest" ]; then
+          pip install preflight-ml --quiet
+        else
+          pip install preflight-ml==${{ inputs.preflight-version }} --quiet
+        fi
+
+    - name: Install PyTorch (CPU)
+      shell: bash
+      run: pip install torch --index-url https://download.pytorch.org/whl/cpu --quiet
+
+    - name: Run pre-flight checks
+      shell: bash
+      run: |
+        ARGS="--dataloader ${{ inputs.dataloader }} --format json"
+        if [ -n "${{ inputs.model }}" ]; then
+          ARGS="$ARGS --model ${{ inputs.model }}"
+        fi
+        if [ -n "${{ inputs.loss }}" ]; then
+          ARGS="$ARGS --loss ${{ inputs.loss }}"
+        fi
+        if [ -n "${{ inputs.val-dataloader }}" ]; then
+          ARGS="$ARGS --val-dataloader ${{ inputs.val-dataloader }}"
+        fi
+        preflight run $ARGS
