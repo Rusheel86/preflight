@@ -31,8 +31,10 @@ def _load_config(config_path: Path | None = None) -> dict:
 def _import_object(script_path: str, var_name: str) -> Any:
     """Import a Python object from a script file."""
     spec = importlib.util.spec_from_file_location("_preflight_user_module", script_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Could not load spec from {script_path}")
     mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
+    spec.loader.exec_module(mod)  # type: ignore[union-attr]
     return getattr(mod, var_name, None)
 
 

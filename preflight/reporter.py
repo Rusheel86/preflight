@@ -46,9 +46,9 @@ def print_results(results: list[CheckResult], fmt: str = "terminal") -> int:
     table.add_column("Status", width=6)
     table.add_column("Message")
 
-    fatal_failures = 0
-    warnings = 0
-    passed = 0
+    fatal_count: int = 0
+    warn_count: int = 0
+    pass_count: int = 0
 
     for r in results:
         color = SEVERITY_COLORS[r.severity]
@@ -58,11 +58,11 @@ def print_results(results: list[CheckResult], fmt: str = "terminal") -> int:
 
         if not r.passed:
             if r.severity == Severity.FATAL:
-                fatal_failures += 1
+                fatal_count += 1
             elif r.severity == Severity.WARN:
-                warnings += 1
+                warn_count += 1
         else:
-            passed += 1
+            pass_count += 1
 
     console.print()
     console.print("[bold]preflight[/bold] — pre-training check report")
@@ -75,12 +75,12 @@ def print_results(results: list[CheckResult], fmt: str = "terminal") -> int:
             console.print(f"  [dim]{name}:[/dim] {hint}")
 
     console.print(
-        f"\n  [red]{fatal_failures} fatal[/red]  "
-        f"[yellow]{warnings} warnings[/yellow]  "
-        f"[green]{passed} passed[/green]"
+        f"\n  [red]{fatal_count} fatal[/red]  "
+        f"[yellow]{warn_count} warnings[/yellow]  "
+        f"[green]{pass_count} passed[/green]"
     )
 
-    if fatal_failures > 0:
+    if fatal_count > 0:
         console.print(
             "\n[red]Pre-flight failed.[/red] Fix fatal issues before training.\n"
             "[dim]Note: passing preflight is a minimum safety bar, "
@@ -89,4 +89,4 @@ def print_results(results: list[CheckResult], fmt: str = "terminal") -> int:
     else:
         console.print("\n[green]Pre-flight passed.[/green] Safe to start training.\n")
 
-    return 1 if fatal_failures > 0 else 0
+    return 1 if fatal_count > 0 else 0

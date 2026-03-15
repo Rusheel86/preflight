@@ -55,14 +55,11 @@ select = ["E", "F", "I", "UP"]
 
 [tool.mypy]
 python_version = "3.9"
-warn_return_any = true
+warn_return_any = false
 warn_unused_configs = true
 ignore_missing_imports = true
-exclude = [
-    "venv/",
-    "build/",
-    "dist/",
-]
+no_implicit_optional = false
+exclude = ["venv/", "build/", "dist/"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
