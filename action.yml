@@ -1,4 +1,4 @@
-name: preflight
+name: preflight-ml
 description: Pre-flight checks for PyTorch pipelines. Catch silent failures before they waste your GPU.
 author: Rusheel Sharma
 
